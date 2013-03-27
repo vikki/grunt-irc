@@ -1,0 +1,46 @@
+{
+  "name": "grunt-irc",
+  "description": "Grunt Plugin for IRC",
+  "version": "0.1.0",
+  "homepage": "https://github.com/vikki/gruntirc",
+  "author": {
+    "name": "Vikki",
+    "email": "vikki.read@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vikki/gruntirc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vikki/gruntirc/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/vikki/gruntirc/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.1.1",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-nodeunit": "~0.1.2",
+    "grunt": "~0.4.1",
+    "sinon": "~1.6.0"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.1"
+  },
+  "keywords": [
+    "gruntplugin"
+  ],
+  "dependencies": {
+    "irc": "~0.3.6"
+  }
+}
