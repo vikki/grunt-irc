@@ -2,6 +2,7 @@
 
 var grunt = require('grunt');
 var gruntIrc = require('../tasks/lib/irc');
+var sinon = require('sinon');
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -25,39 +26,39 @@ var gruntIrc = require('../tasks/lib/irc');
 
 exports.irc = {
   setUp: function(done) {
-    // setup here if necessary
-    //sandbox = sinon.sandbox.create();
+    this.sandbox = sinon.sandbox.create();
     done();
   },
-  default_options: function(test) {
-    grunt.log.write('testing 123');
+  tearDown: function(done) {
+    this.sandbox = sinon.sandbox.restore();
+    done();
+  },
+  ensure_bot_says_configured_msg_on_join_channel: function(test) {
+    test.expect(2);
 
-    test.expect(1);
+    var options = {
+          text: 'Yay! Nous avons deployed :D',
+          url : 'irc.unrulymedia.com', 
+          botName : 'nombot',
+          channel: ['#cakeordeath' ]
+    };
 
-    // yeah i know - testing..
-    // think the problem is that this should be a file not the contents of the file....maybe?
-    var wibble = new Array(grunt.file.read('test/fixtures/123'));
+    var dummyTaskAsync = sinon.stub().returns(sinon.stub());
+    gruntIrc.init(options, grunt, dummyTaskAsync);
 
-    console.log('\n***' + wibble + '\n');
+    // stub out bot say and fake the join event
+    var spy = sinon.spy();
+    gruntIrc.bot.say = spy;
+    gruntIrc.bot.emit('join');
 
-    gruntIrc.init(grunt.package.irc, grunt, wibble);
-
-    var actual = grunt.file.read('tmp/default_options');
-    var expected = grunt.file.read('test/expected/default_options');
-    test.equal(actual, expected, 'should describe what the default behavior is.');
+    // call start - when not on train 3g :P
+    // gruntIrc.start();
+    
+    // verify bot say call
+    test.ok(spy.called, 'bot.say was not called');
+    test.ok(spy.calledWithMatch(options.channel[0], options.text), 'bot.say was not called with the right args');
 
     test.done();
-  },
-  custom_options: function(test) {
-    test.expect(1);
-
-    gruntIrc.init(grunt.package.irc, grunt, 'test/expected/testing');
-
-    var actual = grunt.file.read('tmp/custom_options');
-    var expected = grunt.file.read('test/expected/custom_options');
-    test.equal(actual, expected, 'should describe what the custom option(s) behavior is.');
-
-    test.done();
-  },
+  }
 
 };

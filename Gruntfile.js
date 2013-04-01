@@ -41,19 +41,29 @@ module.exports = function(grunt) {
         }
       },
       options: {
-          url : 'irc.unrulymedia.com', 
+          url : 'localhost', 
           botName : 'nombot',
-          channel: ['#cakeordeath' ]
+          channel: ['#channel1' ]
       }
     },
 
     // Unit tests.
     nodeunit: {
-      tests: ['test/*_test.js'],
+      tests: ['test/irc_test.js'],
+    },
+    simplemocha: {
+      options: {
+        globals: ['should'],
+        timeout: 3000,
+        ignoreLeaks: false,
+        ui: 'bdd',
+        reporter: 'spec'
+      },
+
+      all: { src: 'test/irc_test_mocha.js' }
     }
 
   });
-
 
   // Actually load this plugin's task(s).
   grunt.loadTasks('tasks');
@@ -62,10 +72,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-simple-mocha');
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'irc', 'nodeunit']);
+  //grunt.registerTask('test', ['clean', 'irc', 'nodeunit']);
+  grunt.registerTask('nodeunit_test', ['clean', 'nodeunit']);
+  grunt.registerTask('mocha_test', ['clean', 'simplemocha']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);

@@ -10,25 +10,37 @@
 
 var irc = require('irc');
 
-exports.init = function(options, grunt, task) {
-  var done = task.async();
+// I think this needs to return an object rather than be on the module maybe
 
-  var ircOptions = grunt.config.get('irc.options');
-  //var url = grunt.config.get('irc.options.url'),
-      //botName = grunt.config.get('irc.options.botName'),
-      //channel = grunt.config.get('irc.options.channel');
+// should probs be an error and success cb
+exports.init = function(options, success, error) {
+  var self = this;
+
+  this.bot = this.bot || new irc.Client( options.url, 
+                                         options.botName, 
+                                         { 
+                                           debug: options.debug ? options.debug : false, 
+                                           channels: options.channel, 
+                                           autoConnect: false 
+                                         });
   
-  var bot = new irc.Client(ircOptions.url, ircOptions.botName, { debug: true, channels: ircOptions.channel });
-
-  bot.addListener('join', function(channel, who) {
-    bot.say(options.channel, options.text);
-    grunt.log.writeln('done! i said ' + options.text);
-    done();
+  this.bot.addListener('join', function(channel, who) {
+    self.bot.say(options.channel[0], options.text);
+    if (typeof success === 'function'){
+      success();
+    }    
   });
 
-  bot.addListener('error', function(message) {
-    grunt.log.writeln('ERROR: %s: %s', message.command, message.args.join(' '));
-    done();
+  this.bot.addListener('error', function(message) {
+    self.log('ERROR: %s: %s', message.command, message.args.join(' '));
+    if (typeof error === 'function'){
+      error(message);
+    }
   });
-
 };
+
+// basically pulled this out so i can test it (mock the connection)
+exports.start = function(grunt){
+  this.bot.connect();
+};
+

@@ -23,11 +23,9 @@ module.exports = function(grunt) {
     this.requiresConfig('irc.options.channel');
 
     //grunt.log.writeflags(options, 'options: ');
-
     //grunt.log.writeflags(grunt.config.get('irc.options'), 'kitteh: ');
 
-    //grunt.log.writeln('** in task **');
-
-    irc.init(options, grunt, this);
+    irc.init(options, this.async(), this.async());
+    irc.start();
   });
 };
