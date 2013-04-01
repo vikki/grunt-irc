@@ -16,7 +16,7 @@ exports.init = function(options, success, error) {
   this.bot = this.bot || new irc.Client( options.url, 
                                          options.botName, 
                                          { 
-                                           debug: options.debug ? options.debug : true, 
+                                           debug: options.debug ? options.debug : false, 
                                            channels: options.channel, 
                                            autoConnect: false 
                                          });
