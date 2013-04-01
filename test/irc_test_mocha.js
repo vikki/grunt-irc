@@ -41,7 +41,8 @@ describe('grunt IRC lib module ', function() {
     gruntIrc.bot.say = botSaySpy;
     gruntIrc.bot.emit('join');
 
-    // call start - when not on train 3g :P
+    // would be nice to stub this with an emit, dunno if you can??
+    // could just overwrite the func but a stub would be clearer
     // gruntIrc.start();
     
     botSaySpy.should.have.been.called;

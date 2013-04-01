@@ -10,16 +10,13 @@
 
 var irc = require('irc');
 
-// I think this needs to return an object rather than be on the module maybe
-
-// should probs be an error and success cb
 exports.init = function(options, success, error) {
   var self = this;
 
   this.bot = this.bot || new irc.Client( options.url, 
                                          options.botName, 
                                          { 
-                                           debug: options.debug ? options.debug : false, 
+                                           debug: options.debug ? options.debug : true, 
                                            channels: options.channel, 
                                            autoConnect: false 
                                          });

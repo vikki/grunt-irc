@@ -18,14 +18,13 @@ module.exports = function(grunt) {
       separator: ', '
     });
 
+    var done = this.async();
+
     this.requiresConfig('irc.options.url');
     this.requiresConfig('irc.options.botName');
     this.requiresConfig('irc.options.channel');
 
-    //grunt.log.writeflags(options, 'options: ');
-    //grunt.log.writeflags(grunt.config.get('irc.options'), 'kitteh: ');
-
-    irc.init(options, this.async(), this.async());
+    irc.init(options, done, done);
     irc.start();
   });
 };

@@ -42,7 +42,7 @@ module.exports = function(grunt) {
       },
       options: {
           url : 'localhost', 
-          botName : 'nombot',
+          botName : 'gruntbot',
           channel: ['#channel1' ]
       }
     },
@@ -59,10 +59,14 @@ module.exports = function(grunt) {
         ui: 'bdd',
         reporter: 'spec'
       },
-
-      all: { src: 'test/irc_test_mocha.js' }
+      
+      unit: { src: 'test/irc_test_mocha.js' },
+      end2end: { src: 'test/irc_test_mocha_end2end.js' }
+    },
+    // end2end tests (set up a local irc server for full test)
+    irc_test: {
+        testArgs: 'simplemocha:end2end'
     }
-
   });
 
   // Actually load this plugin's task(s).
@@ -73,14 +77,34 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-simple-mocha');
+  grunt.loadNpmTasks('grunt-parallel');
 
-  // Whenever the "test" task is run, first clean the "tmp" dir, then run this
-  // plugin's task(s), then test the result.
-  //grunt.registerTask('test', ['clean', 'irc', 'nodeunit']);
   grunt.registerTask('nodeunit_test', ['clean', 'nodeunit']);
   grunt.registerTask('mocha_test', ['clean', 'simplemocha']);
 
+  grunt.registerTask('test', ['clean', 'simplemocha']);
+
+  grunt.registerTask('testIrcServer', function() {
+    var timeout,
+        server,
+        done,
+        testArgs;
+
+    server = require('ircdjs/lib/server.js').Server;
+    server.boot();
+
+    testArgs = grunt.config.get('irc_test.testArgs') || 'test';
+    done = this.async();
+
+    grunt.util.spawn({grunt:true, args: 'simplemocha:end2end'}, function(error, result, code) {
+      grunt.log.writeln(result.toString('ascii'));
+      done(error == null);
+    });
+  });
+
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);
+
+  grunt.registerTask('end2end', ['testIrcServer']);
 
 };

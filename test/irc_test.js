@@ -43,8 +43,7 @@ exports.irc = {
           channel: ['#cakeordeath' ]
     };
 
-    var dummyTaskAsync = sinon.stub().returns(sinon.stub());
-    gruntIrc.init(options, grunt, dummyTaskAsync);
+    gruntIrc.init(options);
 
     // stub out bot say and fake the join event
     var spy = sinon.spy();
