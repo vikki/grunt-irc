@@ -19,6 +19,7 @@ grunt.loadNpmTasks('grunt-irc');
 
 ## The "irc" task
 
+
 ### Overview
 In your project's Gruntfile, add a section named `irc` to the data object passed into `grunt.initConfig()`.
 
