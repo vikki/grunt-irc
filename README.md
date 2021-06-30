@@ -17,7 +17,7 @@ One the plugin has been installed, it may be enabled inside your Gruntfile with 
 grunt.loadNpmTasks('grunt-irc');
 ```
 
-## The "irc" task
+## The "irc" task 
 
 ### Overview
 In your project's Gruntfile, add a section named `irc` to the data object passed into `grunt.initConfig()`.
