@@ -38,7 +38,7 @@
     "mocha": "~1.8.2",
     "grunt-simple-mocha": "~0.3.2",
     "ircdjs": "0.0.17",
-    "lodash": "1.0.1"
+    "lodash": "4.17.20"
   },
   "peerDependencies": {
     "grunt": "~0.4.1"
