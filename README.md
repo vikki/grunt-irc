@@ -1,6 +1,6 @@
 # grunt-irc
 
-> Grunt Plugin for IRC
+> Grunt Plugin for IRC 
 
 ## Getting Started
 This plugin requires Grunt `~0.4.1`
